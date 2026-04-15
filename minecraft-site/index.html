@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft 建築藍圖下載站</title>
+  <style>
+    /* ===== 全域樣式 ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #4caf50;
+      --green-dark:  #388e3c;
+      --green-light: #81c784;
+      --bg:          #121212;
+      --bg-card:     #1e1e1e;
+      --bg-nav:      #0d0d0d;
+      --border:      #2a2a2a;
+      --text:        #e0e0e0;
+      --text-muted:  #888;
+      --radius:      10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== 導覽列 ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-nav);
+      border-bottom: 2px solid var(--green-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    /* ===== 頁首 Hero ===== */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      background: linear-gradient(180deg, #0d1a0e 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ===== 自介區塊 ===== */
+    .about {
+      max-width: 760px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      color: var(--green);
+      border-left: 4px solid var(--green);
+      padding-left: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    /* 【填寫自介】把下方文字換成你自己的介紹 */
+    .about-box p { margin-bottom: 0.5rem; }
+
+    /* ===== 使用說明四步驟 ===== */
+    .steps {
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: var(--green-dark);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 0.75rem;
+    }
+
+    .step-card h3 { font-size: 0.95rem; color: var(--green-light); margin-bottom: 0.3rem; }
+    .step-card p  { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ===== 搜尋 + 標籤區 ===== */
+    .filter-area {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      padding: 0 1.5rem;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    #searchInput:focus { border-color: var(--green); }
+    #searchInput::placeholder { color: var(--text-muted); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag-btn {
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .tag-btn:hover,
+    .tag-btn.active {
+      background: var(--green-dark);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    /* ===== 建築卡片區 ===== */
+    .cards-area {
+      max-width: 900px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    #cardGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);   /* 兩欄 */
+      gap: 1.25rem;
+    }
+
+    /* 手機版改單欄 */
+    @media (max-width: 600px) {
+      #cardGrid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--green-dark);
+      transform: translateY(-3px);
+    }
+
+    /* 圖片區：有圖顯示圖，沒有圖顯示 emoji 佔位 */
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #1a2e1b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 3.5rem;   /* emoji 大小 */
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 圖片載入失敗時自動隱藏 img，顯示 emoji */
+    .card-img-wrap img.broken { display: none; }
+
+    .card-body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      color: var(--green-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .card-btns {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.5rem 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-download {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .btn-yt {
+      background: #c62828;
+      color: #fff;
+    }
+
+    /* 搜尋無結果提示 */
+    #noResult {
+      display: none;
+      text-align: center;
+      color: var(--text-muted);
+      padding: 3rem 0;
+      font-size: 1rem;
+      grid-column: 1 / -1;
+    }
+
+    /* ===== 頁尾 ===== */
+    footer {
+      background: var(--bg-nav);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== 導覽列 ==================== -->
+<nav>
+  <span class="nav-logo">⛏ MC Blueprint</span>
+  <ul class="nav-links">
+    <li><a href="#about">關於我</a></li>
+    <li><a href="#howto">使用說明</a></li>
+    <li><a href="#builds">建築下載</a></li>
+  </ul>
+</nav>
+
+<!-- ==================== Hero ==================== -->
+<header class="hero">
+  <h1>⛏ Minecraft 建築藍圖下載站</h1>
+  <!-- 【可修改】副標題 -->
+  <p>免費下載精心設計的建築藍圖，直接在你的世界裡蓋出來！</p>
+</header>
+
+<!-- ==================== 自介區塊 ==================== -->
+<section class="about" id="about">
+  <h2 class="section-title">關於我</h2>
+  <div class="about-box">
+    <!-- 【填寫自介】把下面這幾行換成你自己的介紹文字 -->
+    <p>👋 嗨，我是 [你的名字]！</p>
+    <p>我在 Minecraft 玩了 XX 年，專注於建築設計。這個網站分享我做過的所有藍圖，歡迎自由下載使用！</p>
+    <p>YouTube 頻道：<a href="#" style="color:var(--green);">@你的頻道名</a>　|　Discord：你的ID</p>
+    <!-- 自介結束 -->
+  </div>
+</section>
+
+<!-- ==================== 使用說明四步驟 ==================== -->
+<section class="steps" id="howto">
+  <h2 class="section-title">如何使用</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>下載藍圖</h3>
+      <p>點選建築卡片上的「下載」按鈕取得 .litematic 或 .schematic 檔案</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>安裝 Mod</h3>
+      <p>安裝 Litematica（Fabric）或 Schematica（Forge）Mod</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>載入藍圖</h3>
+      <p>在遊戲中按 M 開啟 Litematica，載入下載的檔案</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h3>開始建造</h3>
+      <p>跟著投影圖一磚一瓦蓋出來，或使用 Easy Place 自動放置</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 搜尋 + 標籤篩選 ==================== -->
+<div class="filter-area" id="builds">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="🔍 搜尋建築名稱或關鍵字..."
+    oninput="filterCards()"
+  />
+  <div class="tags" id="tagBar">
+    <!-- 標籤由 JS 自動產生，也可手動在這裡加 -->
+  </div>
+</div>
+
+<!-- ==================== 建築卡片區 ==================== -->
+<main class="cards-area">
+  <div id="cardGrid">
+    <!-- 無結果提示 -->
+    <div id="noResult">找不到符合的建築 😢</div>
+  </div>
+</main>
+
+<!-- ==================== 頁尾 ==================== -->
+<footer>
+  <!-- 【可修改】頁尾版權文字 -->
+  <p>© 2025 MC Blueprint | 由 [你的名字] 製作 ❤️</p>
+</footer>
+
+<!-- ==================== JavaScript ==================== -->
+<script>
+/**
+ * ============================================================
+ *  【如何新增建築卡片】
+ *
+ *  在下方 buildData 陣列裡，複製一個 { ... } 物件並填入：
+ *
+ *    id       : 唯一編號（數字），每張卡片不能重複
+ *    title    : 建築名稱
+ *    desc     : 簡短描述（1~2 句話）
+ *    tag      : 分類標籤，例如 "住宅" "農場" "城堡" "紅石"
+ *    img      : 圖片路徑（放在 images/ 資料夾），沒有圖片就寫 ""
+ *    emoji    : 沒有圖片時顯示的 emoji，例如 "🏡"
+ *    download : 下載連結（Google Drive / GitHub 等），沒有就寫 ""
+ *    youtube  : YouTube 影片連結，沒有就寫 ""
+ *
+ *  範例：
+ *    {
+ *      id: 4,
+ *      title: "海底神殿",
+ *      desc: "仿海底神殿的裝飾性建築，適合水下地圖使用。",
+ *      tag: "特殊",
+ *      img: "images/build_04.png",
+ *      emoji: "🏛️",
+ *      download: "https://drive.google.com/...",
+ *      youtube: "https://youtu.be/..."
+ *    },
+ *
+ * ============================================================
+ */
+const buildData = [
+
+  /* ---------- 卡片 1 ---------- */
+  {
+    id: 1,
+    title: "現代木屋",
+    desc: "簡約北歐風格木屋，適合生存模式初期使用。含地下室儲藏空間。",
+    tag: "住宅",
+    img: "images/build_01.png",
+    emoji: "🏡",
+    download: "",          // 填入你的下載連結
+    youtube: ""            // 填入你的 YouTube 連結
+  },
+
+  /* ---------- 卡片 2 ---------- */
+  {
+    id: 2,
+    title: "全自動小麥農場",
+    desc: "紅石全自動收穫，一鍵即可收小麥，效率超高。",
+    tag: "農場",
+    img: "images/build_02.png",
+    emoji: "🌾",
+    download: "",
+    youtube: ""
+  },
+
+  /* ---------- 卡片 3 ---------- */
+  {
+    id: 3,
+    title: "中世紀城堡",
+    desc: "附有護城河與箭樓的大型城堡，適合 RPG 伺服器。",
+    tag: "城堡",
+    img: "images/build_03.png",
+    emoji: "🏰",
+    download: "",
+    youtube: ""
+  },
+
+  /* ---------- 在這裡繼續複製新增卡片 ---------- */
+
+];
+
+/* ============================================================
+   以下為網站邏輯，通常不需要修改
+   ============================================================ */
+
+let activeTag = "全部";
+
+/** 從 buildData 取出所有不重複的標籤，自動產生篩選按鈕 */
+function buildTagBar() {
+  const tags = ["全部", ...new Set(buildData.map(b => b.tag))];
+  const bar = document.getElementById("tagBar");
+  bar.innerHTML = tags.map(t =>
+    `<button class="tag-btn${t === activeTag ? " active" : ""}"
+             onclick="setTag('${t}')">${t}</button>`
+  ).join("");
+}
+
+/** 點選標籤 */
+function setTag(tag) {
+  activeTag = tag;
+  buildTagBar();
+  filterCards();
+}
+
+/** 即時搜尋 + 標籤篩選，更新卡片顯示 */
+function filterCards() {
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  const filtered = buildData.filter(b => {
+    const matchTag  = activeTag === "全部" || b.tag === activeTag;
+    const matchText = !q || b.title.toLowerCase().includes(q) || b.desc.toLowerCase().includes(q);
+    return matchTag && matchText;
+  });
+  renderCards(filtered);
+}
+
+/** 把卡片陣列渲染到 #cardGrid */
+function renderCards(list) {
+  const grid = document.getElementById("cardGrid");
+  const noResult = document.getElementById("noResult");
+
+  // 先清空舊卡片（保留 noResult 元素）
+  [...grid.querySelectorAll(".card")].forEach(el => el.remove());
+
+  if (list.length === 0) {
+    noResult.style.display = "block";
+    return;
+  }
+  noResult.style.display = "none";
+
+  list.forEach(b => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    // 圖片區：有路徑就顯示 img；圖片壞掉或沒有路徑就顯示 emoji
+    const imgHTML = b.img
+      ? `<img src="${b.img}" alt="${b.title}"
+              onload="this.classList.remove('broken')"
+              onerror="this.classList.add('broken')">`
+      : "";
+
+    // 按鈕區：沒有連結時按鈕顯示灰色並 disabled
+    const dlBtn = b.download
+      ? `<a href="${b.download}" target="_blank" class="btn btn-download">⬇ 下載藍圖</a>`
+      : `<button class="btn btn-download" disabled style="opacity:.4;cursor:not-allowed">⬇ 即將上傳</button>`;
+
+    const ytBtn = b.youtube
+      ? `<a href="${b.youtube}" target="_blank" class="btn btn-yt">▶ YouTube</a>`
+      : `<button class="btn btn-yt" disabled style="opacity:.4;cursor:not-allowed">▶ 影片</button>`;
+
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        ${imgHTML}
+        <span class="emoji-placeholder">${b.emoji}</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">${b.tag}</span>
+        <div class="card-title">${b.title}</div>
+        <div class="card-desc">${b.desc}</div>
+        <div class="card-btns">${dlBtn}${ytBtn}</div>
+      </div>`;
+
+    // 圖片載入成功後隱藏 emoji
+    const img = card.querySelector("img");
+    const emojiEl = card.querySelector(".emoji-placeholder");
+    if (img) {
+      img.addEventListener("load",  () => { emojiEl.style.display = "none"; });
+      img.addEventListener("error", () => { emojiEl.style.display = ""; });
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+// 初始化
+buildTagBar();
+filterCards();
+</script>
+</body>
+</html>
