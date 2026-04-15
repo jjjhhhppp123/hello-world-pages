@@ -4,24 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Minecraft 建築藍圖下載站</title>
+  <!-- Inter 字體（Mobbin 同款精準幾何無襯線） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     /* ===== 全域樣式 ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --green:       #00e676;
-      --green-dark:  #00c853;
-      --green-light: #69f0ae;
-      --yellow:      #ffd740;
-      --orange:      #ff6d00;
-      --blue:        #40c4ff;
-      --bg:          #0f1923;
-      --bg-card:     #162030;
-      --bg-nav:      #0a1118;
-      --border:      #1e3a2f;
-      --text:        #f0f0f0;
-      --text-muted:  #8fb3a0;
-      --radius:      12px;
+      /* 主色：Minecraft 綠，但節制使用 */
+      --accent:      #22c55e;
+      --accent-dim:  rgba(34,197,94,0.12);
+      --accent-ring: rgba(34,197,94,0.25);
+
+      /* 背景層次（Mobbin 式近黑） */
+      --bg:          #0c0c0c;
+      --bg-surface:  #141414;
+      --bg-elevated: #1a1a1a;
+      --bg-nav:      rgba(12,12,12,0.85);
+
+      /* 邊框（極細、低對比） */
+      --border:      rgba(255,255,255,0.07);
+      --border-hover:rgba(34,197,94,0.4);
+
+      /* 文字 */
+      --text:        #f5f5f5;
+      --text-2:      #a3a3a3;
+      --text-3:      #525252;
+
+      /* YouTube 紅 */
+      --red:         #ef4444;
+
+      --radius-sm:   8px;
+      --radius:      14px;
+      --radius-lg:   20px;
     }
 
     html { scroll-behavior: smooth; }
@@ -29,237 +46,315 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+      /* Inter 優先，繁體中文 fallback */
+      font-family: 'Inter', 'Apple Color Emoji', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+      font-feature-settings: "cv02","cv03","cv04","cv11"; /* Inter 細節優化 */
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; text-decoration: none; }
 
-    /* ===== 導覽列 ===== */
+    /* ===== 導覽列（毛玻璃，Mobbin 風格） ===== */
     nav {
       position: sticky;
       top: 0;
       z-index: 100;
       background: var(--bg-nav);
-      border-bottom: 2px solid var(--green-dark);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 2rem;
-      height: 64px;
-      box-shadow: 0 2px 20px rgba(0,230,118,0.15);
+      height: 60px;
     }
 
     .nav-logo {
-      font-size: 1.35rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--green), var(--yellow));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* 導覽列的綠色小圓點 */
+    .nav-logo::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
     }
 
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 0.25rem;
       list-style: none;
     }
 
     .nav-links a {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      transition: color 0.2s;
+      color: var(--text-2);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
     }
 
-    .nav-links a:hover { color: var(--green); }
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
 
     /* ===== 頁首 Hero ===== */
     .hero {
       text-align: center;
-      padding: 5rem 1.5rem 4rem;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,200,83,0.18) 0%, transparent 70%),
-        linear-gradient(180deg, #0a1a12 0%, var(--bg) 100%);
-      border-bottom: 1px solid var(--border);
+      padding: 6rem 1.5rem 5rem;
       position: relative;
       overflow: hidden;
     }
 
-    /* 背景裝飾光暈 */
+    /* 頂部綠色光暈（Mobbin 式低調放射） */
     .hero::before {
       content: "";
       position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e676' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(34,197,94,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
 
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
     .hero h1 {
-      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-size: clamp(2.2rem, 6vw, 4rem);
       font-weight: 900;
-      background: linear-gradient(135deg, var(--green) 0%, var(--yellow) 60%, var(--orange) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.75rem;
-      text-shadow: none;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 1rem;
       position: relative;
     }
 
+    /* 標題中的綠色關鍵字 */
+    .hero h1 span {
+      color: var(--accent);
+    }
+
     .hero p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 560px;
+      color: var(--text-2);
+      font-size: 1.05rem;
+      font-weight: 400;
+      max-width: 480px;
       margin: 0 auto;
       position: relative;
+      line-height: 1.7;
+    }
+
+    /* ===== 分隔線 ===== */
+    .divider {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      border: none;
+      border-top: 1px solid var(--border);
     }
 
     /* ===== 自介區塊 ===== */
     .about {
       max-width: 760px;
-      margin: 3.5rem auto;
+      margin: 4rem auto;
       padding: 0 1.5rem;
     }
 
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
     .section-title {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      color: var(--green);
-      border-left: 4px solid var(--green);
-      padding-left: 0.75rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 12px rgba(0,230,118,0.4);
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
     }
 
     .about-box {
-      background: linear-gradient(135deg, #162a1e 0%, var(--bg-card) 100%);
+      background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      color: var(--text-muted);
-      line-height: 1.9;
-      box-shadow: 0 4px 24px rgba(0,200,83,0.08);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      color: var(--text-2);
+      line-height: 1.85;
+      font-size: 0.95rem;
     }
 
     /* 【填寫自介】把下方文字換成你自己的介紹 */
-    .about-box p { margin-bottom: 0.5rem; }
+    .about-box p { margin-bottom: 0.6rem; }
+    .about-box p:last-child { margin-bottom: 0; }
 
     /* ===== 使用說明四步驟 ===== */
     .steps {
       max-width: 900px;
-      margin: 0 auto 3.5rem;
+      margin: 0 auto 4rem;
       padding: 0 1.5rem;
     }
 
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1px;           /* 格線間隔用 gap+border 做出 grid 線感 */
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 1.25rem;
     }
 
     .step-card {
-      background: linear-gradient(160deg, #162a1e 0%, var(--bg-card) 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.4rem;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--bg-surface);
+      padding: 1.6rem 1.4rem;
+      text-align: left;
+      transition: background 0.2s;
     }
 
-    .step-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,230,118,0.15);
-      border-color: var(--green-dark);
-    }
+    .step-card:hover { background: var(--bg-elevated); }
 
     .step-num {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #0a1118;
-      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: var(--accent);
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.1rem;
-      margin: 0 auto 0.75rem;
-      box-shadow: 0 0 12px rgba(0,230,118,0.5);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
     }
 
-    .step-card h3 { font-size: 0.95rem; color: var(--green); margin-bottom: 0.3rem; font-weight: 700; }
-    .step-card p  { font-size: 0.85rem; color: var(--text-muted); }
+    .step-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .step-card p {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
 
     /* ===== 搜尋 + 標籤區 ===== */
     .filter-area {
       max-width: 900px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 1.5rem;
       padding: 0 1.5rem;
     }
 
     #searchInput {
       width: 100%;
-      padding: 0.85rem 1.2rem;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
+      padding: 0.8rem 1rem 0.8rem 2.75rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       color: var(--text);
-      font-size: 1rem;
+      font-family: inherit;
+      font-size: 0.9rem;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
       margin-bottom: 1rem;
+      /* 搜尋 icon */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24' stroke='%23525252' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 0.85rem center;
     }
 
     #searchInput:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(0,230,118,0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-ring);
     }
-    #searchInput::placeholder { color: var(--text-muted); }
+
+    #searchInput::placeholder { color: var(--text-3); }
 
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .tag-btn {
-      padding: 0.4rem 1.1rem;
-      border: 2px solid var(--border);
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--border);
       border-radius: 999px;
       background: transparent;
-      color: var(--text-muted);
+      color: var(--text-2);
       cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: all 0.15s;
     }
 
     .tag-btn:hover {
-      background: rgba(0,230,118,0.12);
-      border-color: var(--green);
-      color: var(--green);
+      border-color: rgba(255,255,255,0.2);
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
     }
 
     .tag-btn.active {
-      background: linear-gradient(90deg, var(--green-dark), var(--green));
-      border-color: transparent;
-      color: #0a1118;
-      box-shadow: 0 0 12px rgba(0,230,118,0.4);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
     }
 
     /* ===== 建築卡片區 ===== */
     .cards-area {
       max-width: 900px;
-      margin: 0 auto 4rem;
+      margin: 0 auto 5rem;
       padding: 0 1.5rem;
     }
 
     #cardGrid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);   /* 兩欄 */
-      gap: 1.4rem;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
     }
 
     /* 手機版改單欄 */
@@ -269,31 +364,26 @@
     }
 
     .card {
-      background: linear-gradient(160deg, #162a1e 0%, var(--bg-card) 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
+      background: var(--bg-surface);
       display: flex;
       flex-direction: column;
-      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      transition: background 0.2s;
+      cursor: default;
     }
 
-    .card:hover {
-      border-color: var(--green);
-      transform: translateY(-5px);
-      box-shadow: 0 12px 32px rgba(0,230,118,0.2);
-    }
+    .card:hover { background: var(--bg-elevated); }
 
-    /* 圖片區：有圖顯示圖，沒有圖顯示 emoji 佔位 */
+    /* 圖片區 */
     .card-img-wrap {
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: linear-gradient(135deg, #0d2218, #1a3828);
+      background: var(--bg-elevated);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      font-size: 3.5rem;   /* emoji 大小 */
+      font-size: 3rem;
+      border-bottom: 1px solid var(--border);
     }
 
     .card-img-wrap img {
@@ -307,85 +397,105 @@
     .card-img-wrap img.broken { display: none; }
 
     .card-body {
-      padding: 1.1rem;
+      padding: 1.25rem;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.35rem;
     }
 
+    /* 標籤小膠囊（Mobbin 風格） */
     .card-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--yellow);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(34,197,94,0.18);
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      width: fit-content;
+      margin-bottom: 0.15rem;
     }
 
     .card-title {
-      font-size: 1.05rem;
-      font-weight: 800;
+      font-size: 0.975rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: var(--text);
+      line-height: 1.3;
     }
 
     .card-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: var(--text-2);
       flex: 1;
+      line-height: 1.55;
     }
 
     .card-btns {
       display: flex;
       gap: 0.5rem;
-      margin-top: 0.6rem;
+      margin-top: 0.75rem;
     }
 
     .btn {
       flex: 1;
-      padding: 0.55rem 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 0.5rem 0;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.8rem;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
       text-align: center;
-      transition: opacity 0.2s;
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s, transform 0.1s;
     }
 
-    .btn:hover { filter: brightness(1.15); transform: scale(1.03); }
-    .btn { transition: filter 0.2s, transform 0.15s; }
+    .btn:active { transform: scale(0.97); }
 
     .btn-download {
-      background: linear-gradient(90deg, var(--green-dark), var(--green));
-      color: #0a1118;
-      box-shadow: 0 0 10px rgba(0,230,118,0.35);
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
     }
 
+    .btn-download:hover { opacity: 0.88; }
+
     .btn-yt {
-      background: linear-gradient(90deg, #b71c1c, #ef5350);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(239,83,80,0.35);
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border);
+    }
+
+    .btn-yt:hover {
+      background: rgba(239,68,68,0.1);
+      border-color: rgba(239,68,68,0.4);
+      color: var(--red);
     }
 
     /* 搜尋無結果提示 */
     #noResult {
       display: none;
       text-align: center;
-      color: var(--text-muted);
-      padding: 3rem 0;
-      font-size: 1rem;
+      color: var(--text-3);
+      padding: 4rem 0;
+      font-size: 0.9rem;
       grid-column: 1 / -1;
+      background: var(--bg-surface);
     }
 
     /* ===== 頁尾 ===== */
     footer {
-      background: var(--bg-nav);
-      border-top: 2px solid var(--green-dark);
+      border-top: 1px solid var(--border);
       text-align: center;
-      padding: 1.75rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      box-shadow: 0 -2px 20px rgba(0,230,118,0.08);
+      padding: 2rem;
+      color: var(--text-3);
+      font-size: 0.8rem;
+      letter-spacing: 0.01em;
     }
   </style>
 </head>
@@ -393,7 +503,7 @@
 
 <!-- ==================== 導覽列 ==================== -->
 <nav>
-  <span class="nav-logo">⛏ MC Blueprint</span>
+  <span class="nav-logo">MC Blueprint</span>
   <ul class="nav-links">
     <li><a href="#about">關於我</a></li>
     <li><a href="#howto">使用說明</a></li>
@@ -403,25 +513,31 @@
 
 <!-- ==================== Hero ==================== -->
 <header class="hero">
-  <h1>⛏ Minecraft 建築藍圖下載站</h1>
+  <!-- 【可修改】小標籤文字 -->
+  <div class="hero-label">免費 Minecraft 藍圖資源</div>
+  <h1>建築<span>藍圖</span><br>一鍵下載</h1>
   <!-- 【可修改】副標題 -->
-  <p>免費下載精心設計的建築藍圖，直接在你的世界裡蓋出來！</p>
+  <p>精心設計的 .litematic 藍圖，直接在你的世界裡蓋出來。</p>
 </header>
+
+<hr class="divider" />
 
 <!-- ==================== 自介區塊 ==================== -->
 <section class="about" id="about">
+  <div class="section-label">About</div>
   <h2 class="section-title">關於我</h2>
   <div class="about-box">
     <!-- 【填寫自介】把下面這幾行換成你自己的介紹文字 -->
     <p>👋 嗨，我是 [你的名字]！</p>
     <p>我在 Minecraft 玩了 XX 年，專注於建築設計。這個網站分享我做過的所有藍圖，歡迎自由下載使用！</p>
-    <p>YouTube 頻道：<a href="#" style="color:var(--green);">@你的頻道名</a>　|　Discord：你的ID</p>
+    <p>YouTube 頻道：<a href="#" style="color:var(--accent);">@你的頻道名</a>　|　Discord：你的ID</p>
     <!-- 自介結束 -->
   </div>
 </section>
 
 <!-- ==================== 使用說明四步驟 ==================== -->
 <section class="steps" id="howto">
+  <div class="section-label">How to use</div>
   <h2 class="section-title">如何使用</h2>
   <div class="steps-grid">
     <div class="step-card">
@@ -448,6 +564,7 @@
 </section>
 
 <!-- ==================== 搜尋 + 標籤篩選 ==================== -->
+<hr class="divider" style="margin-bottom:2rem;" />
 <div class="filter-area" id="builds">
   <input
     type="text"
